@@ -1,0 +1,14 @@
+# FROM registry.ctzcdn.com/front/django:1.9
+# 从docker官方仓库拉取
+FROM docker.io/nginx
+MAINTAINER zzz "zhangzhanz@chinatelecom.cn"
+
+RUN mkdir -p /monitor/admin/
+# ADD ./dist /monitor/admin/
+ADD ./nginx/nginx.conf /etc/nginx/nginx.conf
+
+
+
+EXPOSE 9005
+WORKDIR /usr/sbin
+RUN ./nginx

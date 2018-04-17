@@ -1,0 +1,17 @@
+# 从docker官方仓库拉取
+FROM docker.io/zzzdocker/ubuntu_for_py27:14.04
+MAINTAINER zzz "zhangzhanz@chinatelecom.cn"
+
+RUN mkdir /monitor
+ADD . /monitor
+RUN apt-get update
+RUN sudo apt-get install -y python-dev libldap2-dev libsasl2-dev libssl-dev
+RUN pip install -r ./monitor/requirements.txt -i http://pypi.douban.com/simple 
+RUN mkdir -p /var/log/test/
+RUN touch /var/log/test/zabbixApi.log
+
+EXPOSE 9004
+WORKDIR /monitor
+# 运行定时任务
+RUN python manage.py crontab add
+CMD ["python", "manage.py", "runserver", "0.0.0.0:9004"]
